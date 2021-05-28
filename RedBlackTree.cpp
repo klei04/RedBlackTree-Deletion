@@ -314,6 +314,18 @@ Node* SEARCH(Node* root, int data) {
 void REMOVE(Node* & root, int data) {
   Node* toDelete = SEARCH(root, data);
 
+  /*Node* toDelete = root;
+  while (toDelete) {
+    if (toDelete->data == data) {
+      break;
+    }
+    else if (data < toDelete->data) {
+      toDelete = toDelete->left;
+    } else {
+      toDelete = toDelete->right;
+    }
+    }*/
+
   Node* replacement = NULL;
   Node* x = NULL;
 
@@ -529,7 +541,8 @@ void REMOVE(Node* & root, int data) {
 
 void removeFix (Node* & root, Node* & passedx) {
   Node* x = passedx;
-  Node* w = getSibling(x);
+  //Node* w = getSibling(x);
+  Node* w;
 
   if (x->color == RED) { //Case 0: x is red
     //Color x black and we are done
@@ -539,6 +552,7 @@ void removeFix (Node* & root, Node* & passedx) {
 
   while (x != root && x->color == BLACK) {
     if (x == x->parent->left) { //If x is a left child
+      w = x->parent->right;
       if (w->color == RED) { //Case 1: x is black and its sibling w is red
 	//Color w black
 	w->color = BLACK;
@@ -583,6 +597,7 @@ void removeFix (Node* & root, Node* & passedx) {
 	x = root;
       }
     } else { //If x is a right child
+      w = x->parent->left;
       if (w->color == RED) { //Case 1: x is black and its sibling w is red
 	//Color w black
 	w->color = BLACK;
@@ -688,6 +703,7 @@ Node* findMin(Node* root) {
 }
 
 //Function returns sibling of a node
+//Using this function was causing some problems so it doesn't appear in any of the algorithms
 Node* getSibling(Node* sibling) {
   if (sibling->parent == NULL) {
     return NULL;
@@ -697,6 +713,7 @@ Node* getSibling(Node* sibling) {
   } else if (sibling == sibling->parent->right) {
     return sibling->parent->left;
   }
+  return NULL;
 }
 
 //Created an extra function to clear the entire tree, for testing purposes :)
